@@ -169,7 +169,7 @@ const PremiumUser = sequelize.define(
             onDelete: 'CASCADE'
         },
         subscriptionplan : {
-            type: DataTypes.STRING(50),
+            type: DataTypes.ENUM('Silver', 'Gold', 'Daimond', 'Platinum')
         }
     }, 
     {
