@@ -215,25 +215,62 @@ var usersArray = [
     { username: 'usha', email: 'usha@gmail.com', usertype: 'Normal' },
     { username: 'anjani', email: 'anjani@gmail.com', usertype: 'Premium' }
 ];
-var userData = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var err_2;
+var insertData = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var users, posts, err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, 3, 4]);
+                _a.trys.push([0, 7, , 8]);
                 return [4 /*yield*/, User.bulkCreate(usersArray)];
             case 1:
-                _a.sent();
-                console.log('Successfully inserted data into users table.');
-                return [3 /*break*/, 4];
+                users = _a.sent();
+                return [4 /*yield*/, Post.bulkCreate([
+                        { postContent: 'hey!! it is my first post', userid: users[0].userid },
+                        { postContent: 'nice sunset', userid: users[1].userid },
+                        { postContent: 'beautiful butterfly came out from heaven!', userid: users[2].userid },
+                        { postContent: 'kalki ends with blast climax', userid: users[3].userid }
+                    ])];
             case 2:
+                posts = _a.sent();
+                return [4 /*yield*/, Comment.bulkCreate([
+                        { postid: posts[0].postid, userid: users[1].userid, commentcontent: 'great to see you here!! many more to com' },
+                        { postid: posts[1].postid, userid: users[0].userid, commentcontent: 'it is rare color of sun' },
+                        { postid: posts[2].postid, userid: users[3].userid, commentcontent: 'thats sound superb' },
+                        { postid: posts[3].postid, userid: users[2].userid, commentcontent: 'It was mind blowing' }
+                    ])];
+            case 3:
+                _a.sent();
+                return [4 /*yield*/, Like.bulkCreate([
+                        { postid: posts[0].postid, userid: users[1].userid },
+                        { postid: posts[1].postid, userid: users[0].userid },
+                        { postid: posts[2].postid, userid: users[3].userid },
+                        { postid: posts[3].postid, userid: users[2].userid },
+                        { postid: posts[0].postid, userid: users[2].userid }
+                    ])];
+            case 4:
+                _a.sent();
+                return [4 /*yield*/, Follower.bulkCreate([
+                        { followerid: users[0].userid, followedid: users[1].userid },
+                        { followerid: users[1].userid, followedid: users[0].userid },
+                        { followerid: users[2].userid, followedid: users[3].userid },
+                        { followerid: users[3].userid, followedid: users[2].userid },
+                        { followerid: users[0].userid, followedid: users[2].userid }
+                    ])];
+            case 5:
+                _a.sent();
+                return [4 /*yield*/, PremiumUser.bulkCreate([
+                        { userid: users[1].userid, subscriptionplan: 'Platinum' },
+                        { userid: users[3].userid, subscriptionplan: 'Silver' }
+                    ])];
+            case 6:
+                _a.sent();
+                console.log('Successfully inserted data into the database.');
+                return [3 /*break*/, 8];
+            case 7:
                 err_2 = _a.sent();
                 console.log('An error occured!!');
-                return [3 /*break*/, 4];
-            case 3:
-                console.log('done');
-                return [7 /*endfinally*/];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 8];
+            case 8: return [2 /*return*/];
         }
     });
 }); };
@@ -243,7 +280,7 @@ var initializeDatabase = function () { return __awaiter(void 0, void 0, void 0, 
             case 0: return [4 /*yield*/, synchronizeModels()];
             case 1:
                 _a.sent();
-                return [4 /*yield*/, userData()];
+                return [4 /*yield*/, insertData()];
             case 2:
                 _a.sent();
                 return [2 /*return*/];

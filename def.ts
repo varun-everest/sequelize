@@ -197,8 +197,44 @@ const usersArray = [
 const insertData = async() => {
     try{
         
-        await User.bulkCreate(usersArray);
-        console.log('Successfully inserted data into users table.');
+        const users = await User.bulkCreate(usersArray);
+
+        const posts = await Post.bulkCreate([
+            { postContent: 'hey!! it is my first post', userid: users[0].userid },
+            { postContent: 'nice sunset', userid: users[1].userid },
+            { postContent: 'beautiful butterfly came out from heaven!', userid: users[2].userid },
+            { postContent: 'kalki ends with blast climax', userid: users[3].userid }
+        ]);
+
+        await Comment.bulkCreate([
+            { postid: posts[0].postid, userid: users[1].userid, commentcontent: 'great to see you here!! many more to com' },
+            { postid: posts[1].postid, userid: users[0].userid, commentcontent: 'it is rare color of sun' },
+            { postid: posts[2].postid, userid: users[3].userid, commentcontent: 'thats sound superb' },
+            { postid: posts[3].postid, userid: users[2].userid, commentcontent: 'It was mind blowing' }
+        ]);
+
+        await Like.bulkCreate([
+            { postid: posts[0].postid, userid: users[1].userid },
+            { postid: posts[1].postid, userid: users[0].userid },
+            { postid: posts[2].postid, userid: users[3].userid },
+            { postid: posts[3].postid, userid: users[2].userid },
+            { postid: posts[0].postid, userid: users[2].userid }
+        ]);
+
+        await Follower.bulkCreate([
+            { followerid: users[0].userid, followedid: users[1].userid },
+            { followerid: users[1].userid, followedid: users[0].userid },
+            { followerid: users[2].userid, followedid: users[3].userid },
+            { followerid: users[3].userid, followedid: users[2].userid },
+            { followerid: users[0].userid, followedid: users[2].userid }
+        ]);
+
+        await PremiumUser.bulkCreate([
+            { userid: users[1].userid, subscriptionplan: 'Platinum' },
+            { userid: users[3].userid, subscriptionplan: 'Silver' }
+        ]);
+
+        console.log('Successfully inserted data into the database.');
     } catch(err) {
         console.log('An error occured!!');
     }
