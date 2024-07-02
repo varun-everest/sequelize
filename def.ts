@@ -187,4 +187,27 @@ const synchronizeModels = async () => {
     }
 }
 
-synchronizeModels();
+const usersArray = [
+    { username: 'varun', email: 'varunkumar@gmail.com', usertype: 'Normal' },
+    { username: 'vinay', email: 'vinay@gmail.com', usertype: 'Premium' },
+    { username: 'usha', email: 'usha@gmail.com', usertype: 'Normal' },
+    { username: 'anjani', email: 'anjani@gmail.com', usertype: 'Premium' }
+];
+
+const insertData = async() => {
+    try{
+        
+        await User.bulkCreate(usersArray);
+        console.log('Successfully inserted data into users table.');
+    } catch(err) {
+        console.log('An error occured!!');
+    }
+}
+
+const initializeDatabase = async() => {
+    await synchronizeModels();
+    await insertData();
+}
+
+initializeDatabase();
+export { User, Post, Comment, Like, Follower, PremiumUser};

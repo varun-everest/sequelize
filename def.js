@@ -36,6 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PremiumUser = exports.Follower = exports.Like = exports.Comment = exports.Post = exports.User = void 0;
 var conn_1 = require("./conn");
 var DataTypes = require('sequelize').DataTypes;
 var User = conn_1.sequelize.define('user', {
@@ -60,6 +61,7 @@ var User = conn_1.sequelize.define('user', {
     tableName: 'Users',
     timestamps: false,
 });
+exports.User = User;
 var Post = conn_1.sequelize.define('post', {
     postid: {
         type: DataTypes.INTEGER,
@@ -82,6 +84,7 @@ var Post = conn_1.sequelize.define('post', {
     tableName: 'Posts',
     timestamps: false,
 });
+exports.Post = Post;
 var Comment = conn_1.sequelize.define('Comment', {
     commentid: {
         type: DataTypes.INTEGER,
@@ -114,6 +117,7 @@ var Comment = conn_1.sequelize.define('Comment', {
     tableName: 'comments',
     timestamps: false,
 });
+exports.Comment = Comment;
 var Like = conn_1.sequelize.define('Like', {
     likeid: {
         type: DataTypes.INTEGER,
@@ -142,6 +146,7 @@ var Like = conn_1.sequelize.define('Like', {
     tableName: 'likes',
     timestamps: false
 });
+exports.Like = Like;
 var Follower = conn_1.sequelize.define('Follower', {
     followerid: {
         type: DataTypes.INTEGER,
@@ -166,6 +171,7 @@ var Follower = conn_1.sequelize.define('Follower', {
     timestamps: false,
     primaryKey: ['followerid', 'followedid']
 });
+exports.Follower = Follower;
 var PremiumUser = conn_1.sequelize.define('PremiumUser', {
     userid: {
         type: DataTypes.INTEGER,
@@ -183,6 +189,7 @@ var PremiumUser = conn_1.sequelize.define('PremiumUser', {
     tableName: 'premiumusers',
     timestamps: false,
 });
+exports.PremiumUser = PremiumUser;
 var synchronizeModels = function () { return __awaiter(void 0, void 0, void 0, function () {
     var err_1;
     return __generator(this, function (_a) {
@@ -202,4 +209,45 @@ var synchronizeModels = function () { return __awaiter(void 0, void 0, void 0, f
         }
     });
 }); };
-synchronizeModels();
+var usersArray = [
+    { username: 'varun', email: 'varunkumar@gmail.com', usertype: 'Normal' },
+    { username: 'vinay', email: 'vinay@gmail.com', usertype: 'Premium' },
+    { username: 'usha', email: 'usha@gmail.com', usertype: 'Normal' },
+    { username: 'anjani', email: 'anjani@gmail.com', usertype: 'Premium' }
+];
+var userData = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, 3, 4]);
+                return [4 /*yield*/, User.bulkCreate(usersArray)];
+            case 1:
+                _a.sent();
+                console.log('Successfully inserted data into users table.');
+                return [3 /*break*/, 4];
+            case 2:
+                err_2 = _a.sent();
+                console.log('An error occured!!');
+                return [3 /*break*/, 4];
+            case 3:
+                console.log('done');
+                return [7 /*endfinally*/];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+var initializeDatabase = function () { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, synchronizeModels()];
+            case 1:
+                _a.sent();
+                return [4 /*yield*/, userData()];
+            case 2:
+                _a.sent();
+                return [2 /*return*/];
+        }
+    });
+}); };
+initializeDatabase();
